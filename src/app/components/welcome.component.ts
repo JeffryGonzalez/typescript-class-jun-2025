@@ -7,7 +7,7 @@ import { Component, VERSION } from '@angular/core';
     <div class="prose pt-12">
       <h1>Angular Starter</h1>
       <p>Using Angular {{ v.full }}</p>
-
+      <p>This is a change</p>
       <ul>
         <li><a href="https://tailwindcss.com/">Tailwind for CSS</a></li>
         <li><a href="https://daisyui.com/">DaisyUi for UI Library</a></li>
