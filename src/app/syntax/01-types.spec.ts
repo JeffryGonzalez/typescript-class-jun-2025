@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prefer-const */
 describe('Basic Types', () => {
   it('Implicit Types', () => {
     const num1 = 12;
@@ -17,6 +15,8 @@ describe('Basic Types', () => {
     let luckyNumbers = getLuckyNumbers();
 
     expect(age).toBeDefined();
+
+    expect(luckyNumbers.length).toBe(4);
 
     expect(answer).toBe(22); // this will be a failing until we fix it which we will do so.
   });
