@@ -85,6 +85,7 @@ describe('Interfaces and Types and Classes', () => {
     type DisposableCustomer = Customer & Disposable;
     function doSomething(customer: Customer) {
       //customer.
+      // do some more stuff
     }
 
     type Pet = {
