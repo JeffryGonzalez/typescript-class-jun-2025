@@ -1,14 +1,22 @@
-import { patchState, signalStore, withHooks, withMethods } from '@ngrx/signals';
-import { addEntity, setEntities, withEntities } from '@ngrx/signals/entities';
-import { VehicleCreateModel } from '../types/';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
-import { ApiVehicle, VehicleApiService } from './vehicle-api.service';
+import { tapResponse } from '@ngrx/operators';
+import {
+  patchState,
+  signalStore,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { addEntity, setEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { mergeMap, pipe, switchMap } from 'rxjs';
-import { tapResponse } from '@ngrx/operators';
 import { NormalizedVehicle } from '../utils';
+import { ApiVehicle, VehicleApiService } from './vehicle-api.service';
 export const VehicleStore = signalStore(
+  withState<{ error: string | null }>({
+    error: null,
+  }),
   withEntities<ApiVehicle>(),
   withDevtools('vehicles'),
   withMethods((store) => {
@@ -20,8 +28,11 @@ export const VehicleStore = signalStore(
             service.addVehicle(v).pipe(
               tapResponse({
                 next: (v) => patchState(store, addEntity(v)),
-                error(error) {
-                  console.log(error);
+                error(e) {
+                  console.log(e);
+                  patchState(store, {
+                    error: 'Bad API Request for Vehicles - Check with Ray',
+                  });
                 },
               }),
             ),
