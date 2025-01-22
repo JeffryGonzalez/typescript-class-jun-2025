@@ -3,6 +3,7 @@ import { VehicleStore } from '../services/vehicle-store';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { VehicleCreateModel } from '../types';
 import { FormModel } from '@shared';
+import { normalizeVehicle } from '../utils';
 @Component({
   selector: 'app-vehicle-entry',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,6 +59,11 @@ export class EntryComponent {
   });
 
   addVehicle() {
-    this.store.add(this.form.getRawValue());
+    // you must get the data from the form
+    const dataFromForm = this.form.getRawValue();
+    // run it through the normalizer
+    const vehicleToAdd = normalizeVehicle(dataFromForm);
+    // and then you can add it to the store.
+    this.store.add(vehicleToAdd);
   }
 }

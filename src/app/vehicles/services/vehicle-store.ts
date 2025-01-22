@@ -1,19 +1,20 @@
 import { patchState, signalStore, withHooks, withMethods } from '@ngrx/signals';
 import { addEntity, setEntities, withEntities } from '@ngrx/signals/entities';
-import { Vehicle, VehicleCreateModel } from '../types/';
+import { VehicleCreateModel } from '../types/';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
-import { VehicleApiService } from './vehicle-api.service';
+import { ApiVehicle, VehicleApiService } from './vehicle-api.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { mergeMap, pipe, switchMap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { NormalizedVehicle } from '../utils';
 export const VehicleStore = signalStore(
-  withEntities<Vehicle>(),
+  withEntities<ApiVehicle>(),
   withDevtools('vehicles'),
   withMethods((store) => {
     const service = inject(VehicleApiService);
     return {
-      add: rxMethod<VehicleCreateModel>(
+      add: rxMethod<NormalizedVehicle>(
         pipe(
           mergeMap((v) =>
             service.addVehicle(v).pipe(
