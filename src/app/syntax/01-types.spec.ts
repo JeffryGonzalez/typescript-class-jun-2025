@@ -48,16 +48,20 @@ describe('Basic Types', () => {
     type FilmGenre = 'Drama' | 'SciFi' | 'Comedy' | 'Horror';
     type Movie = {
       title: string;
-      director: string;
+      directedBy: string;
       genre: FilmGenre; // literal union
       yearReleased: number;
       studio: string;
       cast?: Role[];
     };
 
+    //type BasicMovie = Omit<Movie, 'studio' | 'cast'>;
+
+    type BasicMovie = Pick<Movie, 'title' | 'directedBy' | 'genre'>;
+
     const fireWalk: Movie = {
       title: 'Fire Walk With Me',
-      director: 'Lynch',
+      directedBy: 'Lynch',
       yearReleased: 1994,
       genre: 'Drama',
       studio: 'Miramax',
@@ -69,7 +73,7 @@ describe('Basic Types', () => {
 
     const lostHighway: Movie = {
       title: 'Lost Highway',
-      director: 'David Lynch',
+      directedBy: 'David Lynch',
       genre: 'Horror',
       yearReleased: 1996,
       studio: 'Miramax',

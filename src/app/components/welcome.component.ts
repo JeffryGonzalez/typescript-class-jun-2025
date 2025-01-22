@@ -1,4 +1,5 @@
-import { Component, VERSION } from '@angular/core';
+import { Component, inject, VERSION } from '@angular/core';
+import { DataService } from './data.service';
 
 @Component({
   selector: 'app-welcome',
@@ -21,4 +22,5 @@ import { Component, VERSION } from '@angular/core';
 })
 export class WelcomeComponent {
   v = VERSION;
+  #service = inject(DataService);
 }
