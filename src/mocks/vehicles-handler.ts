@@ -1,5 +1,5 @@
 import { http, HttpResponse, delay } from 'msw';
-import { Vehicle } from '../app/vehicles/types';
+import { Vehicle, VehicleCreateModel } from '../app/vehicles/types';
 
 const fakeData: Vehicle[] = [
   {
@@ -16,6 +16,16 @@ const fakeData: Vehicle[] = [
   },
 ];
 export const VehiclesHandlers = [
+  http.post('/api/vehicles', async ({ request }) => {
+    const requestBody = (await request.json()) as unknown as VehicleCreateModel;
+
+    const vehicleToAdd: Vehicle = {
+      id: crypto.randomUUID(),
+      ...requestBody,
+    };
+    fakeData.push(vehicleToAdd);
+    return HttpResponse.json(vehicleToAdd);
+  }),
   http.get('/api/vehicles', async () => {
     await delay(2000);
     return HttpResponse.json(fakeData);

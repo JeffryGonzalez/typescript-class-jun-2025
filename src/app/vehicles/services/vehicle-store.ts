@@ -1,11 +1,11 @@
 import { patchState, signalStore, withHooks, withMethods } from '@ngrx/signals';
-import { setEntities, withEntities } from '@ngrx/signals/entities';
-import { Vehicle } from '../types/';
+import { addEntity, setEntities, withEntities } from '@ngrx/signals/entities';
+import { Vehicle, VehicleCreateModel } from '../types/';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
 import { VehicleApiService } from './vehicle-api.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap } from 'rxjs';
+import { mergeMap, pipe, switchMap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 export const VehicleStore = signalStore(
   withEntities<Vehicle>(),
@@ -13,6 +13,20 @@ export const VehicleStore = signalStore(
   withMethods((store) => {
     const service = inject(VehicleApiService);
     return {
+      add: rxMethod<VehicleCreateModel>(
+        pipe(
+          mergeMap((v) =>
+            service.addVehicle(v).pipe(
+              tapResponse({
+                next: (v) => patchState(store, addEntity(v)),
+                error(error) {
+                  console.log(error);
+                },
+              }),
+            ),
+          ),
+        ),
+      ),
       _load: rxMethod<void>(
         pipe(
           switchMap(() =>

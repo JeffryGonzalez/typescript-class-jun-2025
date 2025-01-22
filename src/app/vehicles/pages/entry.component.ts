@@ -54,10 +54,10 @@ export class EntryComponent {
   form = new FormGroup<FormModel<VehicleCreateModel>>({
     make: new FormControl('', { nonNullable: true }),
     model: new FormControl('', { nonNullable: true }),
-    year: new FormControl<number>(2025, { nonNullable: true }),
+    year: new FormControl(2025, { nonNullable: true }),
   });
 
   addVehicle() {
-    console.log(this.form.value);
+    this.store.add(this.form.getRawValue());
   }
 }
