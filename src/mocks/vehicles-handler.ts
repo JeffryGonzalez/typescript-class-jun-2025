@@ -1,7 +1,7 @@
-import { http, HttpResponse, delay } from 'msw';
-import { Vehicle, VehicleCreateModel } from '../app/vehicles/types';
+import { delay, http, HttpResponse } from 'msw';
+import { VehicleCreateModel } from '../app/vehicles/types';
 
-const fakeData = [
+const fakeData: unknown[] = [
   {
     id: '9999',
     make: 'Ford',
