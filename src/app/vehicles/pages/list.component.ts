@@ -7,7 +7,11 @@ import { VehicleStore } from '../services/vehicle-store';
   imports: [],
   template: `
     <p>List</p>
-
+    @if (store.entities().length === 0) {
+      <div class="alert alert-error">
+        <p>You have no vehicles! Go add some!</p>
+      </div>
+    }
     <ul>
       @for (vehicle of store.entities(); track vehicle.id) {
         <li>

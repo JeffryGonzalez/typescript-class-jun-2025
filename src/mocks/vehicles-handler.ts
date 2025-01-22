@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 import { Vehicle } from '../app/vehicles/types';
 
 const fakeData: Vehicle[] = [
@@ -8,7 +8,16 @@ const fakeData: Vehicle[] = [
     model: 'Bronco',
     year: 2021,
   },
+  {
+    id: '999387',
+    make: 'Honda',
+    model: 'Pilot',
+    year: 2019,
+  },
 ];
 export const VehiclesHandlers = [
-  http.get('/api/vehicles', () => HttpResponse.json(fakeData)),
+  http.get('/api/vehicles', async () => {
+    await delay(2000);
+    return HttpResponse.json(fakeData);
+  }),
 ];
