@@ -11,7 +11,7 @@ const fakeData: unknown[] = [
   },
 ];
 export const VehiclesHandlers = [
-  http.post('/api/vehicles', async ({ request }) => {
+  http.post('https://test.internal.com/api/vehicles', async ({ request }) => {
     const requestBody = (await request.json()) as unknown as VehicleCreateModel;
 
     const vehicleToAdd = {
@@ -22,7 +22,7 @@ export const VehiclesHandlers = [
     fakeData.push(vehicleToAdd);
     return HttpResponse.json(vehicleToAdd);
   }),
-  http.get('/api/vehicles', async () => {
+  http.get('https://test.internal.com/api/vehicles', async () => {
     await delay(2000);
     return HttpResponse.json(fakeData);
   }),

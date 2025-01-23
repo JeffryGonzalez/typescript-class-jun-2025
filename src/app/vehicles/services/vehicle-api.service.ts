@@ -3,14 +3,16 @@ import { inject } from '@angular/core';
 import { Brand } from '@shared';
 import { map, Observable } from 'rxjs';
 import { Vehicle, VehicleCreateModel, VehiclesSchema } from '../types';
+import { environment } from '../../../environments/environment';
 
 export type ApiVehicle = Brand<Vehicle, 'api-vehicles'>;
 
 export class VehicleApiService {
   #client = inject(HttpClient);
+  #baseUrl = environment.vehicleApi;
 
   loadVehicles(): Observable<ApiVehicle[]> {
-    return this.#client.get<Vehicle[]>('/api/vehicles').pipe(
+    return this.#client.get<Vehicle[]>(`${this.#baseUrl}api/vehicles`).pipe(
       map((v) => {
         const r = VehiclesSchema.safeParse(v);
         if (r.success) {
@@ -25,7 +27,7 @@ export class VehicleApiService {
 
   addVehicle(vehicle: VehicleCreateModel) {
     return this.#client
-      .post<Vehicle>('/api/vehicles', vehicle)
+      .post<Vehicle>(`${this.#baseUrl}api/vehicles`, vehicle)
       .pipe(map((v) => v as ApiVehicle));
   }
 }

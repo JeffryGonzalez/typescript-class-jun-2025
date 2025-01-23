@@ -7,3 +7,7 @@ export type FormModel<T> = {
 
 declare const brand: unique symbol;
 export type Brand<T, TBrand extends string> = T & { [brand]: TBrand };
+
+type HttpLink = `http://${string}`;
+type HttpsLink = `https://${string}`;
+export type Link = HttpLink | HttpsLink;
