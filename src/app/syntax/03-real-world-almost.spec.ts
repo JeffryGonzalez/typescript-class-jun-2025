@@ -26,7 +26,7 @@ describe('A fake but realistic use of typeScript and Types', () => {
 
     expect(result2).toEqual({
       vin: '9999',
-      make: 'Ferrari',
+      make: 'Ford',
       model: 'Bronco',
       year: 2023,
     });

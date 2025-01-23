@@ -6,7 +6,6 @@ import { Vehicle, VehicleCreateModel, VehiclesSchema } from '../types';
 
 export type ApiVehicle = Brand<Vehicle, 'api-vehicles'>;
 
-// @Injectable()
 export class VehicleApiService {
   #client = inject(HttpClient);
 
