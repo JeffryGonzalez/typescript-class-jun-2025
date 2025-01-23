@@ -189,7 +189,127 @@ describe('Discriminated Unions', () => {
 });
 describe('Functions and HOF', () => {
   it('Functions and overloading, etc.', () => {
-    //
+    // Anonymous Function
+    expect(((a: number, b: number) => a + b)(2, 2)).toBe(4);
+
+    const numbers = [1, 2, 3, 4];
+    // Named Anonymous Functions
+    const doubleIt = (a: number): number => a * 2;
+    const doubled = numbers.filter(isEven).map(doubleIt);
+    expect(doubled).toEqual([4, 8]);
+    // Named Functions
+
+    function isEven(n: number) {
+      return n % 2 === 0;
+    }
+  });
+  it('hof 1 - taking arguments that are functions', () => {
+    type MathOp = (a: number, b: number) => number;
+
+    const add: MathOp = (a: number, b: number) => a + b;
+    const subtract: MathOp = (x: number, y: number) => x - y;
+
+    function doThisThing(g: number, h: number, f: MathOp) {
+      return f(g * 2, g * 2);
+    }
+
+    const a1 = doThisThing(10, 12, (x, y) => x * y);
+  });
+  it('optional parameters and overloading and rest and all that', () => {
+    function doThings(a = 12, b = 10) {
+      return a + b;
+    }
+
+    expect(doThings(2, 3)).toBe(5);
+    expect(doThings(8)).toBe(18);
+    expect(doThings()).toBe(22);
+
+    function formatName(first: string, last: string, mi?: string) {
+      const fullName = `${last}, ${first}`;
+      if (mi) {
+        return fullName + ` ${mi}.`;
+      } else {
+        return fullName;
+      }
+    }
+
+    expect(formatName('Luke', 'Skywalker')).toBe('Skywalker, Luke');
+    expect(formatName('Han', 'Solo', 'D')).toBe('Solo, Han D.');
+  });
+
+  it('Overloading', () => {
+    function formatName(first: string, last: string, mi: string): string;
+    function formatName(first: string, last: string): string {
+      return '';
+    }
+
+    const x = formatName('Joe', 'Schmidt', 'J');
+  });
+
+  it('rest parameters', () => {
+    function add(a: number, b: number, ...rest: number[]) {
+      const seed = a + b;
+      return rest.reduce((a, b) => a + b, seed);
+    }
+
+    expect(add(2, 2)).toBe(4);
+    expect(add(1, 2, 3, 4, 5, 6, 7, 8, 9)).toBe(45);
+  });
+
+  it('reducing for reals', () => {
+    type Increment = {
+      type: 'add';
+    };
+    type Decrement = {
+      type: 'subtract';
+    };
+
+    type Actions = Increment | Decrement;
+
+    const history: Actions[] = [
+      { type: 'add' },
+      { type: 'subtract' },
+      { type: 'add' },
+      { type: 'add' },
+    ];
+
+    type Result = {
+      total: number;
+    };
+
+    const initialState: Result = {
+      total: 0,
+    };
+    const currentState = history.reduce((state, next) => {
+      switch (next.type) {
+        case 'add':
+          return { total: state.total + 1 };
+        case 'subtract':
+          return { total: state.total - 1 };
+      }
+    }, initialState);
+  });
+
+  it('Scoring ', () => {
+    const scores = [127, 183, 212, 25];
+
+    type BowlingGame = {
+      highestScore: number;
+      lowestScore: number;
+    };
+    const initialState: BowlingGame = {
+      highestScore: -1,
+      lowestScore: 301,
+    };
+
+    const answer: BowlingGame = scores.reduce((a: BowlingGame, b: number) => {
+      return {
+        highestScore: b > a.highestScore ? b : a.highestScore,
+        lowestScore: b < a.lowestScore ? b : a.lowestScore,
+      };
+    }, initialState);
+
+    expect(answer).toEqual({ highestScore: 212, lowestScore: 25 });
   });
 });
 
