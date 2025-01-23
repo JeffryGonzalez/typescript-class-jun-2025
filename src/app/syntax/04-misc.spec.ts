@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/array-type */
 describe('Unknown vs Any', () => {
   it('using any is bad', () => {
     type Meal = {
@@ -115,5 +116,85 @@ describe('Discriminated Unions', () => {
       .reduce((total, p) => p.salary + total, 0); // [{sue}] => 0
 
     expect(totalSalaryOfFolks).toBe(82_000);
+  });
+
+  describe('Arrays and Tuples', () => {
+    it('Arrays', () => {
+      const shows = [
+        'Twin Peaks',
+        'Breaking Bad',
+        'MASH',
+        3.1415,
+        { title: 'Twin Peaks the Return' },
+      ];
+      const el4 = shows[4];
+
+      const stuff: (string | number)[] = [99];
+
+      const stuff2: Array<string | number> = [];
+
+      stuff[1] = 12;
+
+      stuff[2] = 'Beer';
+    });
+
+    it('Tuple types are typed arrays', () => {
+      const settings: [string, { options: 'always' | 'never' }] = [
+        'save-on-changes',
+        { options: 'always' },
+      ];
+    });
+
+    it('Example Tuple Usage with Record', () => {
+      type Severity = 'error' | 'off' | 'warn';
+      type RuleConfig = { selector: string; message: string };
+
+      type RuleEntry = [Severity, RuleConfig];
+
+      const demo: RuleEntry = [
+        'error',
+        { message: 'Blammmo', selector: 'CallExpression..' },
+      ];
+
+      type Rules =
+        | 'no-restricted-syntax'
+        | '@angular-eslint/directive-selector';
+
+      const rules: Record<Rules, RuleEntry> = {
+        'no-restricted-syntax': [
+          'error',
+          { selector: 'blah', message: 'Blammo' },
+        ],
+        '@angular-eslint/directive-selector': [
+          'warn',
+          { selector: 'some selector', message: 'bird' },
+        ],
+      };
+
+      type Players = 'Jeff' | 'Stacey' | 'Henry' | 'Violet';
+      const bowlingScores: Record<Players, number> = {
+        Jeff: 127,
+        Stacey: 212,
+        Henry: 183,
+        Violet: 32,
+      };
+
+      const goals = new Set<string>();
+      goals.add('Clean Garage');
+      goals.add('Clean Garage');
+
+      expect(goals.size).toBe(1);
+    });
+  });
+});
+describe('Functions and HOF', () => {
+  it('Functions and overloading, etc.', () => {
+    //
+  });
+});
+
+describe('Classes', () => {
+  it('Examples', () => {
+    //
   });
 });
