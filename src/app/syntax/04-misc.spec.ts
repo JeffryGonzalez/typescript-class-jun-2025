@@ -315,6 +315,46 @@ describe('Functions and HOF', () => {
 
 describe('Classes', () => {
   it('Examples', () => {
-    //
+    class Worker {}
+
+    interface IDisposable {
+      dispose: () => void;
+    }
+
+    class Employee extends Worker implements IDisposable {
+      constructor(
+        public name: string,
+        private _salary: number,
+      ) {
+        super();
+      }
+
+      dispose() {
+        // do your thing.
+      }
+
+      giveRaise(amount: number) {
+        this._salary += amount;
+      }
+
+      get salary() {
+        return this._salary;
+      }
+
+      private _manager = 'Unassigned';
+      set manager(newManager: string) {
+        this._manager = newManager;
+      }
+    }
+
+    const bob = new Employee('Bob', 32_000);
+
+    expect(bob.name).toBe('Bob');
+
+    bob.giveRaise(1000);
+
+    expect(bob.salary).toBe(33_000);
+
+    bob.manager = 'Sue';
   });
 });
